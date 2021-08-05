@@ -12,6 +12,9 @@ namespace Ratquaza.Pokedex2
         private static readonly string SPRITE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
         public readonly string Name;
+        public readonly string InternalName;
+        public readonly int ID;
+        public readonly int Generation;
 
         public readonly bool IsDefault;
         public readonly bool IsBaby;
@@ -19,30 +22,31 @@ namespace Ratquaza.Pokedex2
 
         public readonly Type[] Types = { Type.Unknown, Type.Unknown };
 
-        public readonly int ID;
-        public readonly int Generation;
-
         private readonly string[] MaleSprites = new string[4];
         private readonly string[] FemaleSprites = new string[4];
 
         private Dictionary<string, Pokemon> Forms = new Dictionary<string, Pokemon>();
+        private readonly string[] EvolutionNames = new string[0];
 
         internal Pokemon(JObject species, JObject pokemon)
         {
-            JArray langArray = (JArray)species["names"];
-            foreach (JObject i in langArray)
+            JArray nameArray = (JArray) species["names"];
+            foreach (JObject names in nameArray)
             {
-                if (i["language"]["name"].ToString() == "en")
+                if (names["language"]["name"].ToString() == "en")
                 {
-                    this.Name = i["name"].ToString();
+                    this.Name = names["name"].ToString();
                     break;
                 }
             }
 
-            ID = (int)species["id"];
+            InternalName = pokemon["name"].ToString();
+            ID = (int) species["id"];
+            string generationString = (species["generation"]["url"].ToString());
+            this.Generation = int.Parse(generationString[generationString.Length - 2].ToString());
 
-            IsDefault = (bool)pokemon["is_default"];
-            IsBaby = (bool)species["is_baby"];
+            IsDefault = (bool) pokemon["is_default"];
+            IsBaby = (bool) species["is_baby"];
 
             if ((bool)species["is_legendary"])
             {
@@ -58,16 +62,13 @@ namespace Ratquaza.Pokedex2
                 Arctype = Arctype.Normal;
             }
 
-            string generationString = (species["generation"]["url"].ToString());
-            this.Generation = int.Parse(generationString[generationString.Length - 2].ToString());
-
             JArray typeArray = (JArray)pokemon["types"];
             Type type;
-            Enum.TryParse<Type>(typeArray[0]["type"]["name"].ToString(), true, out type);
+            Enum.TryParse(typeArray[0]["type"]["name"].ToString(), true, out type);
             this.Types[0] = type;
             if (typeArray.Count == 2)
             {
-                Enum.TryParse<Type>(typeArray[1]["type"]["name"].ToString(), true, out type);
+                Enum.TryParse(typeArray[1]["type"]["name"].ToString(), true, out type);
             }
             this.Types[1] = type;
 
@@ -114,6 +115,38 @@ namespace Ratquaza.Pokedex2
                     tasks.ForEach((t) => t.Start());
                     Task.WaitAll(tasks.ToArray());
                 }
+
+                JObject evolutionData = GetEvolutionData(Pokedex.GetRequest(pokemon["evolution_details"]["url"].ToString()).Result);
+                JArray chains = (JArray) evolutionData["evolves_to"];
+                if (chains.Count > 0)
+                {
+                    EvolutionNames = new string[chains.Count];
+                    for (int i = 0; i < EvolutionNames.Length; i++)
+                    {
+                        EvolutionNames[i] = ((JObject)chains[i])["species"]["name"].ToString();
+                    }
+                }
+            }
+        }
+
+        private JObject GetEvolutionData(JObject baseChain)
+        {
+
+            if (baseChain["species"]["name"].ToString() == InternalName)
+            {
+                return baseChain;
+            } else
+            {
+                JArray chain = (JArray) baseChain["evolves_to"];
+                if (chain.Count > 0)
+                {
+                    foreach (JObject c in chain)
+                    {
+                        JObject data = GetEvolutionData(c);
+                        if (data != null) return data;
+                    }
+                }
+                return null;
             }
         }
 
@@ -142,6 +175,11 @@ namespace Ratquaza.Pokedex2
         {
             int index = (front ? 0 : 2) + (shiny ? 1 : 0);
             return female ? FemaleSprites[index] : MaleSprites[index];
+        }
+
+        public string[] GetEvolutions()
+        {
+            return EvolutionNames;
         }
 
         public override string ToString()

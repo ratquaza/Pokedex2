@@ -9,6 +9,7 @@
     <PackageProjectUrl>https://github.com/ratquaza/Pokedex2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ratquaza/Pokedex2</RepositoryUrl>
     <PackageId>Ratquaza.Pokedex2</PackageId>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
