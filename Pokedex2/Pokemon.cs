@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Pokedex2;
 
 namespace Pokedex2
 {
@@ -121,15 +122,5 @@ namespace Pokedex2
         {
             return "Pokemon{" + Name + "," + Types[0].ToString() + (Types[1] == Types[0] ? "" : " " + Types[1].ToString()) + "}";
         }
-    }
-
-    public enum Type
-    {
-        Bug, Dark, Dragon, Electric, Fairy, Fighting, Fire, Flying, Ghost, Grass, Ground, Ice, Normal, Poison, Psychic, Rock, Steel, Water, Unknown
-    }
-
-    public enum Arctype
-    {
-        Normal, Mythical, Legendary, Ultrabeast
     }
 }
