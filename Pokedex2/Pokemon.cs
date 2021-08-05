@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Pokedex2;
+using Ratquaza.Pokedex2;
 
-namespace Pokedex2
+namespace Ratquaza.Pokedex2
 {
     public class Pokemon
     {

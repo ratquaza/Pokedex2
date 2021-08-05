@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pokedex2
+namespace Ratquaza.Pokedex2
 {
     public enum Arctype
     {

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Ratquaza.Pokedex2</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

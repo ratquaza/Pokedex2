@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Pokedex2
+namespace Ratquaza.Pokedex2
 {
     public class Pokedex
     {
