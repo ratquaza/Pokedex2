@@ -24,7 +24,7 @@ namespace Pokedex2
                 JObject speciesData = GetRequest(URL_PREFIX + "pokemon-species/" + name.ToLower(), client).Result;
                 if (speciesData == null)
                 {
-                    throw new NullReferenceException("Pokemon " + name + " does not exist. Did you spell it right?");
+                    throw new ArgumentNullException("Pokemon " + name + " was not found on the server.");
                 }
                 JObject pokemonData = GetRequest(speciesData["varieties"][0]["pokemon"]["url"].ToString(), client).Result;
 
