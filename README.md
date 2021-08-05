@@ -13,4 +13,4 @@ Pokemon rayquazaOther = Pokedex.ByName("Rayquaza"); // Rayquaza's data exists in
 [Newtonsoft.Json v.13.0.1 or later](https://www.newtonsoft.com/json)
 
 # Building
-Build with Visual Studio, or download from releases
+Build with Visual Studio, and modify to any extent.
