@@ -116,7 +116,7 @@ namespace Ratquaza.Pokedex2
                     Task.WaitAll(tasks.ToArray());
                 }
 
-                JObject evolutionData = GetEvolutionData(Pokedex.GetRequest(pokemon["evolution_details"]["url"].ToString()).Result);
+                JObject evolutionData = GetEvolutionData((JObject) Pokedex.GetRequest(species["evolution_chain"]["url"].ToString()).Result["chain"]);
                 JArray chains = (JArray) evolutionData["evolves_to"];
                 if (chains.Count > 0)
                 {
