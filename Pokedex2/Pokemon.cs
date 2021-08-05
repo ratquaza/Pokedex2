@@ -9,6 +9,8 @@ namespace Ratquaza.Pokedex2
 {
     public class Pokemon
     {
+        private static readonly string SPRITE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+
         public readonly string Name;
 
         public readonly bool IsDefault;
@@ -20,8 +22,8 @@ namespace Ratquaza.Pokedex2
         public readonly int ID;
         public readonly int Generation;
 
-        public readonly string FrontDefault;
-        public readonly string FrontShiny;
+        private readonly string[] MaleSprites = new string[4];
+        private readonly string[] FemaleSprites = new string[4];
 
         private Dictionary<string, Pokemon> Forms = new Dictionary<string, Pokemon>();
 
@@ -69,8 +71,26 @@ namespace Ratquaza.Pokedex2
             }
             this.Types[1] = type;
 
-            this.FrontDefault = pokemon["sprites"]["front_default"].ToString();
-            this.FrontShiny = pokemon["sprites"]["front_shiny"].ToString();
+            MaleSprites = new string[]
+            {
+                SPRITE_URL + ID + ".png",
+                SPRITE_URL + "shiny/" + ID + ".png",
+                SPRITE_URL + "back/" + ID + ".png",
+                SPRITE_URL + "back/shiny/" + ID + ".png"
+            };
+            if (pokemon["sprites"]["front_female"].Type == JTokenType.Null)
+            {
+                FemaleSprites = MaleSprites;
+            } else
+            {
+                FemaleSprites = new string[]
+                {
+                    SPRITE_URL + "female/" + ID + ".png",
+                    SPRITE_URL + "shiny/female/"  + ID + ".png",
+                    SPRITE_URL + "back/female/" + ID + ".png",
+                    SPRITE_URL + "back/shiny/female/" + ID + ".png"
+                };
+            }
 
             if (IsDefault)
             {
@@ -116,6 +136,12 @@ namespace Ratquaza.Pokedex2
             Pokemon form;
             Forms.TryGetValue(name.ToLower(), out form);
             return form;
+        }
+
+        public string GetSprite(bool front = true, bool female = false, bool shiny = false)
+        {
+            int index = (front ? 0 : 2) + (shiny ? 1 : 0);
+            return female ? FemaleSprites[index] : MaleSprites[index];
         }
 
         public override string ToString()
