@@ -1,2 +1,2 @@
 # Pokedex2
- Lightweight Pokedex that loads Pokemon data through PokeAPI
+ Lightweight C# Pokedex that loads Pokemon data through PokeAPI
