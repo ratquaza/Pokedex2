@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Ratquaza.Pokedex2</RootNamespace>
+    <Authors>Anky Yawanis</Authors>
+    <Company>ratquaza</Company>
+    <Description>Lightweight open source C# Library Pokedex that loads Pokemon data through PokeAPI.</Description>
+    <PackageProjectUrl>https://github.com/ratquaza/Pokedex2</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ratquaza/Pokedex2</RepositoryUrl>
+    <PackageId>Ratquaza.Pokedex2</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
